@@ -1,1 +1,188 @@
-.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Satyam Store</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <header>
+    <h1>🛍️ Satyam Store</h1>
+    <p>Best Deals • Best Products</p>
+  </header>
+
+  <!-- Search -->
+  <div class="search">
+    <input
+      type="text"
+      id="searchInput"
+      placeholder="🔍 Search products..."
+      onkeyup="searchProducts()"
+    >
+  </div>
+
+  <!-- Categories -->
+  <div class="categories">
+    <button onclick="filterCategory('all')">All</button>
+    <button onclick="filterCategory('shirt')">👕 Shirts</button>
+    <button onclick="filterCategory('electronics')">📱 Electronics</button>
+    <button onclick="filterCategory('fashion')">👟 Fashion</button>
+  </div>
+
+  <div class="container">
+
+    <h2>🔥 Trending Products</h2>
+
+    <br>
+
+    <div class="products">
+
+      <!-- Product 1: Shirt -->
+      <div class="product" data-category="shirt">
+
+        <img
+          src="https://i.ibb.co/8LRJ0gFV/1000042707.jpg"
+          alt="Men's Stylish Shirt"
+        >
+
+        <h3>Men's Stylish Shirt</h3>
+
+        <p class="price">₹499</p>
+
+        <button
+          class="buy"
+          onclick="window.open('https://myntr.it/Up9d5ud','_blank')"
+        >
+          Buy Now
+        </button>
+
+      </div>
+
+
+<!-- Product 2: Smart Watch -->
+<div class="product" data-category="electronics">
+
+  <img
+    src="https://i.ibb.co/4w9nwnWz/1000042714.jpg"
+    alt="Gwalbros T800 Ultra Smartwatch"
+  >
+
+  <h3>Gwalbros T800 Ultra Smartwatch</h3>
+
+  <p class="price">₹399</p>
+
+  <button
+    class="buy"
+    onclick="window.open('https://bitli.in/0NoeWDJ','_blank')"
+  >
+    Buy Now
+  </button>
+
+</div>
+
+
+<!-- Product 3: Wireless Earbuds -->
+<div class="product" data-category="electronics">
+
+  <img
+    src="https://i.ibb.co/qKgbWsb/1000042719.jpg"
+    alt="Wireless Earbuds"
+  >
+
+  <h3>Wireless Earbuds</h3>
+
+  <p class="price">₹199</p>
+
+  <button
+    class="buy"
+    onclick="window.open('https://bitli.in/CPwRCg2','_blank')"
+  >
+    Buy Now
+  </button>
+
+</div>
+
+
+<!-- Product 4: Sneakers -->
+<div class="product" data-category="fashion">
+
+  <img
+    src="https://i.ibb.co/bg0WNbMY/1000042720.jpg"
+    alt="Stylish Sneakers"
+  >
+
+  <h3>Stylish Sneakers</h3>
+
+  <p class="price">₹199</p>
+
+  <button
+    class="buy"
+    onclick="window.open('https://bitli.in/lhgyO7x','_blank')"
+  >
+    Buy Now
+  </button>
+
+</div>
+
+    </div>
+
+  </div>
+
+
+  <!-- JavaScript -->
+  <script>
+
+    function searchProducts() {
+
+      const searchText = document
+        .getElementById("searchInput")
+        .value
+        .toLowerCase()
+        .trim();
+
+      const products = document.querySelectorAll(".product");
+
+      products.forEach(function(product) {
+
+        const productName = product
+          .querySelector("h3")
+          .textContent
+          .toLowerCase();
+
+        product.style.display =
+          productName.includes(searchText) ? "" : "none";
+
+      });
+    }
+
+
+    function filterCategory(category) {
+
+      const products = document.querySelectorAll(".product");
+
+      products.forEach(function(product) {
+
+        if (
+          category === "all" ||
+          product.dataset.category === category
+        ) {
+          product.style.display = "";
+        } else {
+          product.style.display = "none";
+        }
+
+      });
+
+      // Search box clear
+      document.getElementById("searchInput").value = "";
+    }
+
+  </script>
+
+</body>
+</html>
