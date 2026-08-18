@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Satyam Store - Wishlist</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+
+  <h1>❤️ My Wishlist</h1>
+
+  <p>Satyam Store</p>
+
+  <button class="cart-box" onclick="continueShopping()">
+    🛍️ Continue Shopping
+  </button>
+
+</header>
+
+
+<div class="cart-page">
+
+  <div id="wishlistItems"></div>
+
+</div>
+
+
+<script>
+
+/* =========================
+   ALL PRODUCTS
+========================= */
+
+const products = {
+
+  "shirt-001": {
+    name: "Men's Stylish Shirt",
+    price: 499,
+    image: "https://i.ibb.co/8LRJ0gFV/1000042707.jpg",
+    link: "https://myntr.it/Up9d5ud"
+  },
+
+  "watch-002": {
+    name: "Gwalbros T800 Ultra Smartwatch",
+    price: 399,
+    image: "https://i.ibb.co/4w9nwnWz/1000042714.jpg",
+    link: "https://bitli.in/0NoeWDJ"
+  },
+
+  "earbuds-003": {
+    name: "Wireless Earbuds",
+    price: 199,
+    image: "https://i.ibb.co/qKgbWsb/1000042719.jpg",
+    link: "https://bitli.in/CPwRCg2"
+  },
+
+  "sneakers-004": {
+    name: "Stylish Sneakers",
+    price: 199,
+    image: "https://i.ibb.co/bg0WNbMY/1000042720.jpg",
+    link: "https://bitli.in/lhgyO7x"
+  },
+
+  "banarasi-saree-005": {
+    name: "Banarasi Saree",
+    price: 249,
+    image: "https://i.ibb.co/1JpjNXXB/1000042754.jpg",
+    link: "https://bitli.in/RVwbbDn"
+  },
+
+  "red-saree-006": {
+    name: "Red Colour Saree",
+    price: 499,
+    image: "https://i.ibb.co/M5Ry3TTG/1000042757.jpg",
+    link: "https://bitli.in/GBp6KG6"
+  },
+
+  "baggy-black-jeans-007": {
+    name: "Baggy Black Colour Jeans",
+    price: 399,
+    image: "https://i.ibb.co/9kK0J5T5/1000042760.jpg",
+    link: "https://bitli.in/gLAiKvl"
+  },
+
+  "fit-man-baggy-jeans-008": {
+    name: "Fit Man Baggy Black Jeans",
+    price: 499,
+    image: "https://i.ibb.co/twHX743X/1000042764.jpg",
+    link: "https://bitli.in/aOmi2XX"
+  },
+
+  "watch-cap-goggles-009": {
+    name: "Wrist Watch + Cap + Goggles Combo",
+    price: 249,
+    image: "https://i.ibb.co/NnxVH6MD/1000042766.jpg",
+    link: "https://bitli.in/Pr8oyCc"
+  },
+
+  "jewel-set-010": {
+    name: "Jewel Set",
+    price: 99,
+    image: "https://i.ibb.co/2HRR9ks/1000042859.jpg",
+    link: "https://bitli.in/VnW6ydI"
+  },
+
+  "dry-fruits-011": {
+    name: "500 Gram Dry Fruits",
+    price: 199,
+    image: "https://i.ibb.co/mrVphmMk/1000042861.jpg",
+    link: "https://bitli.in/T61E8pK"
+  },
+
+  "new-trending-shirt-012": {
+    name: "New Trending Shirt",
+    price: 249,
+    image: "https://i.ibb.co/Tqnv3B8w/1000042865.jpg",
+    link: "https://bitli.in/4ij4OKt"
+  },
+
+  "girl-watch-013": {
+    name: "Girl Watch",
+    price: 149,
+    image: "https://i.ibb.co/zHDF8xwX/1000042867.jpg",
+    link: "https://bitli.in/44k5iyT"
+  },
+
+  "new-earbuds-014": {
+    name: "Earbuds",
+    price: 150,
+    image: "https://i.ibb.co/d4rmJNjr/1000043006.jpg",
+    link: "https://bitli.in/V7Xs3ur"
+  },
+
+  "earphone-015": {
+    name: "Earphone",
+    price: 199,
+    image: "https://i.ibb.co/fY7nDs14/1000043008.jpg",
+    link: "https://bitli.in/yqH2Mzp"
+  },
+
+  "woman-kurti-016": {
+    name: "Woman Kurti",
+    price: 249,
+    image: "https://i.ibb.co/BVqnq5QV/1000043022.jpg",
+    link: "https://bitli.in/uvqPKm5"
+  },
+
+  "ladies-kurti-017": {
+    name: "Ladies Kurti",
+    price: 399,
+    image: "https://i.ibb.co/S43kVRMY/1000043026.jpg",
+    link: "https://bitli.in/adwWNgk"
+  },
+
+  "ladies-kurti-018": {
+    name: "Ladies Kurti - Design 2",
+    price: 399,
+    image: "https://i.ibb.co/gpR2djY/1000043031.jpg",
+    link: "https://bitli.in/adwWNgk"
+  },
+
+  "ladies-kurta-pant-019": {
+    name: "Ladies Kurta and Pant Set",
+    price: 299,
+    image: "https://i.ibb.co/s9tCfkZn/1000043033.jpg",
+    link: "https://bitli.in/Tpnio9z"
+  },
+
+  "woman-kurti-pant-020": {
+    name: "Woman Kurti and Pant Set",
+    price: 299,
+    image: "https://i.ibb.co/SDWb72SB/1000043037.jpg",
+    link: "https://bitli.in/fM9wi8H"
+  },
+
+  "mens-shirt-021": {
+    name: "Mens Shirt",
+    price: 149,
+    image: "https://i.ibb.co/3mgsBCXt/1000043044.jpg",
+    link: "https://bitli.in/yqsTAb4"
+  },
+
+  "tiger-snake-shirt-022": {
+    name: "Tiger Snake Striped Casual Shirt",
+    price: 149,
+    image: "https://i.ibb.co/d0L9wjmH/1000043049.jpg",
+    link: "https://bitli.in/thPWfjR"
+  },
+
+  "men-black-shirt-023": {
+    name: "Men Casual Black Shirt",
+    price: 249,
+    image: "https://i.ibb.co/4g3jF4RD/1000043052.jpg",
+    link: "https://bitli.in/rfnOWMd"
+  },
+
+  "wrist-watch-024": {
+    name: "Wrist Watch",
+    price: 299,
+    image: "https://i.ibb.co/XkyGJ622/1000043054.jpg",
+    link: "https://bitli.in/eadWbOY"
+  }
+
+};
+
+
+/* =========================
+   GET WISHLIST
+========================= */
+
+function getWishlist() {
+
+  try {
+
+    return JSON.parse(
+      localStorage.getItem("satyamWishlist") || "[]"
+    );
+
+  } catch {
+
+    return [];
+
+  }
+
+}
+
+
+/* =========================
+   SAVE WISHLIST
+========================= */
+
+function saveWishlist(wishlist) {
+
+  localStorage.setItem(
+    "satyamWishlist",
+    JSON.stringify(wishlist)
+  );
+
+}
+
+
+/* =========================
+   DISPLAY
+========================= */
+
+function displayWishlist() {
+
+  const container =
+    document.getElementById("wishlistItems");
+
+  container.innerHTML = "";
+
+  const wishlist =
+    getWishlist();
+
+
+  if (wishlist.length === 0) {
+
+    container.innerHTML = `
+
+      <div class="empty-cart">
+
+        <h2>❤️ Your wishlist is empty</h2>
+
+        <p>
+          Add products to your wishlist.
+        </p>
+
+        <button
+          class="buy"
+          onclick="continueShopping()"
+        >
+          🛍️ Browse Products
+        </button>
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  wishlist.forEach(function(id) {
+
+    const product =
+      products[id];
+
+    if (!product) return;
+
+
+    container.innerHTML += `
+
+      <div class="cart-item">
+
+        <img
+          src="${product.image}"
+          alt="${product.name}"
+        >
+
+        <div class="cart-info">
+
+          <h3>
+            ${product.name}
+          </h3>
+
+          <p class="price">
+            ₹${product.price}
+          </p>
+
+          <button
+            class="buy"
+            onclick="buyProduct('${id}')"
+          >
+            🛒 Buy Now
+          </button>
+
+          <button
+            class="cart-btn"
+            onclick="addToCart('${id}')"
+          >
+            🛒 Add to Cart
+          </button>
+
+          <button
+            class="remove-btn"
+            onclick="removeFromWishlist('${id}')"
+          >
+            ❤️ Remove
+          </button>
+
+        </div>
+
+      </div>
+
+    `;
+
+  });
+
+}
+
+
+/* =========================
+   REMOVE
+========================= */
+
+function removeFromWishlist(id) {
+
+  let wishlist =
+    getWishlist();
+
+
+  wishlist =
+    wishlist.filter(function(item) {
+
+      return item !== id;
+
+    });
+
+
+  saveWishlist(wishlist);
+
+  displayWishlist();
+
+}
+
+
+/* =========================
+   ADD TO CART
+========================= */
+
+function addToCart(id) {
+
+  const product =
+    products[id];
+
+  if (!product) return;
+
+
+  let cart =
+    JSON.parse(
+      localStorage.getItem("satyamCart") || "[]"
+    );
+
+
+  const existing =
+    cart.find(function(item) {
+
+      return item.id === id;
+
+    });
+
+
+  if (existing) {
+
+    existing.quantity =
+      Number(existing.quantity || 0) + 1;
+
+  } else {
+
+    cart.push({
+
+      id: id,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+      link: product.link,
+      quantity: 1
+
+    });
+
+  }
+
+
+  localStorage.setItem(
+    "satyamCart",
+    JSON.stringify(cart)
+  );
+
+
+  updateCartCount();
+
+
+  alert("🛒 Product added to cart!");
+
+}
+
+
+/* =========================
+   CART COUNT
+========================= */
+
+function updateCartCount() {
+
+  const cart =
+    JSON.parse(
+      localStorage.getItem("satyamCart") || "[]"
+    );
+
+
+  const count =
+    cart.reduce(function(total, item) {
+
+      return total +
+        Number(item.quantity || 0);
+
+    }, 0);
+
+
+  localStorage.setItem(
+    "satyamCartCount",
+    count
+  );
+
+}
+
+
+/* =========================
+   BUY
+========================= */
+
+function buyProduct(id) {
+
+  const product =
+    products[id];
+
+  if (!product || !product.link) {
+
+    alert(
+      "Product link is not available."
+    );
+
+    return;
+
+  }
+
+
+  window.open(
+    product.link,
+    "_blank",
+    "noopener,noreferrer"
+  );
+
+}
+
+
+/* =========================
+   CONTINUE SHOPPING
+========================= */
+
+function continueShopping() {
+
+  window.location.href =
+    "index.html";
+
+}
+
+
+/* =========================
+   LOAD
+========================= */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  function() {
+
+    displayWishlist();
+
+  }
+);
+
+</script>
+
+</body>
+</html>
