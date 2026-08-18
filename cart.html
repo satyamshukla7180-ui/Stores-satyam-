@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Satyam Store - Cart</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+
+  <h1>🛒 My Cart</h1>
+
+  <p>Satyam Store</p>
+
+  <button class="cart-box" onclick="continueShopping()">
+    🛍️ Continue Shopping
+  </button>
+
+</header>
+
+
+<div class="cart-page">
+
+  <div id="cartItems"></div>
+
+  <div class="cart-summary">
+
+    <h2>📦 Order Summary</h2>
+
+    <p>
+      Total Items:
+      <strong id="totalItems">0</strong>
+    </p>
+
+    <h2>
+      Total:
+      <span id="totalPrice">₹0</span>
+    </h2>
+
+    <button class="buy" onclick="checkout()">
+      🧾 Proceed to Checkout
+    </button>
+
+    <button class="cart-btn" onclick="clearCart()">
+      🗑️ Clear Cart
+    </button>
+
+  </div>
+
+</div>
+
+
+<script>
+
+let cart = JSON.parse(
+  localStorage.getItem("satyamCart") || "[]"
+);
+
+
+/* =========================
+   DISPLAY CART
+========================= */
+
+function displayCart() {
+
+  const cartItems =
+    document.getElementById("cartItems");
+
+  cartItems.innerHTML = "";
+
+  let totalItems = 0;
+  let totalPrice = 0;
+
+
+  if (cart.length === 0) {
+
+    cartItems.innerHTML = `
+
+      <div class="empty-cart">
+
+        <h2>🛒 Your cart is empty</h2>
+
+        <p>Add some products to your cart.</p>
+
+        <button class="buy" onclick="continueShopping()">
+          🛍️ Shop Products
+        </button>
+
+      </div>
+
+    `;
+
+    updateSummary(0, 0);
+    updateCartStorage();
+
+    return;
+  }
+
+
+  cart.forEach(function(item, index) {
+
+    const quantity =
+      Math.max(1, Number(item.quantity) || 1);
+
+    const price =
+      Number(item.price) || 0;
+
+    const itemTotal =
+      price * quantity;
+
+    totalItems += quantity;
+    totalPrice += itemTotal;
+
+
+    cartItems.innerHTML += `
+
+      <div class="cart-item">
+
+        <img
+          src="${item.image}"
+          alt="${item.name}"
+        >
+
+        <div class="cart-info">
+
+          <h3>${item.name}</h3>
+
+          <p class="price">
+            ₹${price}
+          </p>
+
+          <div class="quantity">
+
+            <button onclick="changeQuantity(${index}, -1)">
+              −
+            </button>
+
+            <span>${quantity}</span>
+
+            <button onclick="changeQuantity(${index}, 1)">
+              +
+            </button>
+
+          </div>
+
+          <p>
+            Item Total:
+            <strong>₹${itemTotal}</strong>
+          </p>
+
+          <button
+            class="remove-btn"
+            onclick="removeItem(${index})"
+          >
+            🗑️ Remove
+          </button>
+
+          <button
+            class="buy"
+            onclick="buyProduct(${index})"
+          >
+            🛒 Buy Now
+          </button>
+
+        </div>
+
+      </div>
+
+    `;
+
+  });
+
+
+  updateSummary(
+    totalItems,
+    totalPrice
+  );
+
+  updateCartStorage();
+
+}
+
+
+/* =========================
+   QUANTITY
+========================= */
+
+function changeQuantity(index, amount) {
+
+  if (!cart[index]) return;
+
+
+  cart[index].quantity =
+    Number(cart[index].quantity || 1) + amount;
+
+
+  if (cart[index].quantity <= 0) {
+
+    cart.splice(index, 1);
+
+  }
+
+
+  saveCart();
+  displayCart();
+
+}
+
+
+/* =========================
+   REMOVE
+========================= */
+
+function removeItem(index) {
+
+  if (!cart[index]) return;
+
+  cart.splice(index, 1);
+
+  saveCart();
+
+  displayCart();
+
+}
+
+
+/* =========================
+   CLEAR CART
+========================= */
+
+function clearCart() {
+
+  if (cart.length === 0) return;
+
+
+  const confirmClear =
+    confirm(
+      "Are you sure you want to clear your cart?"
+    );
+
+
+  if (!confirmClear) return;
+
+
+  cart = [];
+
+  saveCart();
+
+  displayCart();
+
+}
+
+
+/* =========================
+   SAVE CART
+========================= */
+
+function saveCart() {
+
+  localStorage.setItem(
+    "satyamCart",
+    JSON.stringify(cart)
+  );
+
+  updateCartStorage();
+
+}
+
+
+function updateCartStorage() {
+
+  const count =
+    cart.reduce(function(total, item) {
+
+      return total +
+        Number(item.quantity || 0);
+
+    }, 0);
+
+
+  localStorage.setItem(
+    "satyamCartCount",
+    count
+  );
+
+}
+
+
+/* =========================
+   SUMMARY
+========================= */
+
+function updateSummary(items, price) {
+
+  document.getElementById(
+    "totalItems"
+  ).textContent = items;
+
+
+  document.getElementById(
+    "totalPrice"
+  ).textContent =
+    "₹" + price.toLocaleString("en-IN");
+
+}
+
+
+/* =========================
+   BUY PRODUCT
+========================= */
+
+function buyProduct(index) {
+
+  if (!cart[index]) return;
+
+
+  if (!cart[index].link) {
+
+    alert(
+      "Product link is not available."
+    );
+
+    return;
+
+  }
+
+
+  window.open(
+    cart[index].link,
+    "_blank",
+    "noopener,noreferrer"
+  );
+
+}
+
+
+/* =========================
+   CHECKOUT
+========================= */
+
+function checkout() {
+
+  if (cart.length === 0) {
+
+    alert("🛒 Your cart is empty!");
+
+    return;
+
+  }
+
+
+  buyProduct(0);
+
+}
+
+
+/* =========================
+   CONTINUE SHOPPING
+========================= */
+
+function continueShopping() {
+
+  window.location.href =
+    "index.html";
+
+}
+
+
+/* =========================
+   PAGE LOAD
+========================= */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  function() {
+
+    displayCart();
+
+  }
+);
+
+</script>
+
+</body>
+</html>
