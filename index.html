@@ -3,186 +3,779 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>Satyam Store</title>
-
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-  <header>
-    <h1>🛍️ Satyam Store</h1>
-    <p>Best Deals • Best Products</p>
-  </header>
+<header>
+  <h1>🛍️ Satyam Store</h1>
+  <p>Best Deals • Best Products</p>
 
-  <!-- Search -->
-  <div class="search">
-    <input
-      type="text"
-      id="searchInput"
-      placeholder="🔍 Search products..."
-      onkeyup="searchProducts()"
-    >
+  <button class="cart-box" onclick="openCart()">
+    🛒 Cart: <span id="cartCount">0</span>
+  </button>
+
+  <button class="wishlist-box" onclick="openWishlist()">
+    ❤️ Wishlist: <span id="wishlistCount">0</span>
+  </button>
+</header>
+
+
+<div class="hero">
+  <div>
+    <h2>🔥 Today's Best Deals</h2>
+    <p>Trending products at amazing prices</p>
+
+    <button onclick="document.querySelector('.products').scrollIntoView({behavior:'smooth'})">
+      Shop Now
+    </button>
   </div>
+</div>
 
-  <!-- Categories -->
-  <div class="categories">
-    <button onclick="filterCategory('all')">All</button>
-    <button onclick="filterCategory('shirt')">👕 Shirts</button>
-    <button onclick="filterCategory('electronics')">📱 Electronics</button>
-    <button onclick="filterCategory('fashion')">👟 Fashion</button>
-  </div>
 
-  <div class="container">
+<div class="search">
+  <input
+    type="text"
+    id="searchInput"
+    placeholder="🔍 Search products..."
+    oninput="searchProducts()"
+  >
+</div>
 
-    <h2>🔥 Trending Products</h2>
 
-    <br>
+<div class="categories">
+  <button onclick="filterCategory('all')">All</button>
+  <button onclick="filterCategory('shirt')">👕 Shirts</button>
+  <button onclick="filterCategory('electronics')">📱 Electronics</button>
+  <button onclick="filterCategory('fashion')">👟 Fashion</button>
+  <button onclick="filterCategory('food')">🥜 Food</button>
+</div>
 
-    <div class="products">
 
-      <!-- Product 1: Shirt -->
-      <div class="product" data-category="shirt">
+<div class="container">
+
+  <h2>🔥 Trending Products</h2>
+  <br>
+
+  <div class="products" id="productsContainer"></div>
+
+</div>
+
+
+<script>
+
+/* =========================
+   ALL PRODUCT DATA
+========================= */
+
+const productData = {
+
+  "shirt-001": {
+    name: "Men's Stylish Shirt",
+    price: 499,
+    oldPrice: 1499,
+    discount: "67% OFF",
+    category: "shirt",
+    image: "https://i.ibb.co/8LRJ0gFV/1000042707.jpg",
+    link: "https://myntr.it/Up9d5ud"
+  },
+
+  "watch-002": {
+    name: "Gwalbros T800 Ultra Smartwatch",
+    price: 399,
+    oldPrice: 899,
+    discount: "56% OFF",
+    category: "electronics",
+    image: "https://i.ibb.co/4w9nwnWz/1000042714.jpg",
+    link: "https://bitli.in/0NoeWDJ"
+  },
+
+  "earbuds-003": {
+    name: "Wireless Earbuds",
+    price: 199,
+    oldPrice: 799,
+    discount: "75% OFF",
+    category: "electronics",
+    image: "https://i.ibb.co/qKgbWsb/1000042719.jpg",
+    link: "https://bitli.in/CPwRCg2"
+  },
+
+  "sneakers-004": {
+    name: "Stylish Sneakers",
+    price: 199,
+    oldPrice: 1199,
+    discount: "83% OFF",
+    category: "fashion",
+    image: "https://i.ibb.co/bg0WNbMY/1000042720.jpg",
+    link: "https://bitli.in/lhgyO7x"
+  },
+
+  "banarasi-saree-005": {
+    name: "Banarasi Saree",
+    price: 249,
+    oldPrice: 999,
+    discount: "75% OFF",
+    category: "fashion",
+    image: "https://i.ibb.co/1JpjNXXB/1000042754.jpg",
+    link: "https://bitli.in/RVwbbDn"
+  },
+
+  "red-saree-006": {
+    name: "Red Colour Saree",
+    price: 499,
+    oldPrice: 2999,
+    discount: "83% OFF",
+    category: "fashion",
+    image: "https://i.ibb.co/M5Ry3TTG/1000042757.jpg",
+    link: "https://bitli.in/GBp6KG6"
+  },
+
+  "baggy-black-jeans-007": {
+    name: "Baggy Black Colour Jeans",
+    price: 399,
+    oldPrice: 999,
+    discount: "60% OFF",
+    category: "fashion",
+    image: "https://i.ibb.co/9kK0J5T5/1000042760.jpg",
+    link: "https://bitli.in/gLAiKvl"
+  },
+
+  "fit-man-baggy-jeans-008": {
+    name: "Fit Man Baggy Black Jeans",
+    price: 499,
+    oldPrice: 1499,
+    discount: "67% OFF",
+    category: "fashion",
+    image: "https://i.ibb.co/twHX743X/1000042764.jpg",
+    link: "https://bitli.in/aOmi2XX"
+  },
+
+  "watch-cap-goggles-009": {
+    name: "Wrist Watch + Cap + Goggles Combo",
+    price: 249,
+    oldPrice: 999,
+    discount: "75% OFF",
+    category: "fashion",
+    image: "https://i.ibb.co/NnxVH6MD/1000042766.jpg",
+    link: "https://bitli.in/Pr8oyCc"
+  },
+
+  "jewel-set-010": {
+    name: "Jewel Set",
+    price: 99,
+    oldPrice: 999,
+    discount: "90% OFF",
+    category: "fashion",
+    image: "https://i.ibb.co/2HRR9ks/1000042859.jpg",
+    link: "https://bitli.in/VnW6ydI"
+  },
+
+  "dry-fruits-011": {
+    name: "500 Gram Dry Fruits",
+    price: 199,
+    oldPrice: 699,
+    discount: "72% OFF",
+    category: "food",
+    image: "https://i.ibb.co/mrVphmMk/1000042861.jpg",
+    link: "https://bitli.in/T61E8pK"
+  },
+
+  "new-trending-shirt-012": {
+    name: "New Trending Shirt",
+    price: 249,
+    oldPrice: 999,
+    discount: "75% OFF",
+    category: "shirt",
+    image: "https://i.ibb.co/Tqnv3B8w/1000042865.jpg",
+    link: "https://bitli.in/4ij4OKt"
+  },
+
+  "girl-watch-013": {
+    name: "Girl Watch",
+    price: 149,
+    oldPrice: 799,
+    discount: "81% OFF",
+    category: "fashion",
+    image: "https://i.ibb.co/zHDF8xwX/1000042867.jpg",
+    link: "https://bitli.in/44k5iyT"
+  },
+
+  "new-earbuds-014": {
+    name: "Earbuds",
+    price: 150,
+    oldPrice: 999,
+    discount: "85% OFF",
+    category: "electronics",
+    image: "https://i.ibb.co/d4rmJNjr/1000043006.jpg",
+    link: "https://bitli.in/V7Xs3ur"
+  },
+
+  "earphone-015": {
+    name: "Earphone",
+    price: 199,
+    oldPrice: 1599,
+    discount: "88% OFF",
+    category: "electronics",
+    image: "https://i.ibb.co/fY7nDs14/1000043008.jpg",
+    link: "https://bitli.in/yqH2Mzp"
+  },
+
+  "woman-kurti-016": {
+    name: "Woman Kurti",
+    price: 249,
+    oldPrice: 999,
+    discount: "75% OFF",
+    category: "fashion",
+    image: "https://i.ibb.co/BVqnq5QV/1000043022.jpg",
+    link: "https://bitli.in/uvqPKm5"
+  },
+
+  "ladies-kurti-017": {
+    name: "Ladies Kurti",
+    price: 399,
+    oldPrice: 999,
+    discount: "60% OFF",
+    category: "fashion",
+    image: "https://i.ibb.co/S43kVRMY/1000043026.jpg",
+    link: "https://bitli.in/adwWNgk"
+  },
+
+  "ladies-kurti-018": {
+    name: "Ladies Kurti - Design 2",
+    price: 399,
+    oldPrice: 999,
+    discount: "60% OFF",
+    category: "fashion",
+    image: "https://i.ibb.co/gpR2djY/1000043031.jpg",
+    link: "https://bitli.in/adwWNgk"
+  },
+
+  "ladies-kurta-pant-019": {
+    name: "Ladies Kurta and Pant Set",
+    price: 299,
+    oldPrice: 999,
+    discount: "70% OFF",
+    category: "fashion",
+    image: "https://i.ibb.co/s9tCfkZn/1000043033.jpg",
+    link: "https://bitli.in/Tpnio9z"
+  },
+
+  "woman-kurti-pant-020": {
+    name: "Woman Kurti and Pant Set",
+    price: 299,
+    oldPrice: 1999,
+    discount: "85% OFF",
+    category: "fashion",
+    image: "https://i.ibb.co/SDWb72SB/1000043037.jpg",
+    link: "https://bitli.in/fM9wi8H"
+  },
+
+  "mens-shirt-021": {
+    name: "Mens Shirt",
+    price: 149,
+    oldPrice: 999,
+    discount: "85% OFF",
+    category: "shirt",
+    image: "https://i.ibb.co/3mgsBCXt/1000043044.jpg",
+    link: "https://bitli.in/yqsTAb4"
+  },
+
+  "tiger-snake-shirt-022": {
+    name: "Tiger Snake Striped Casual Shirt",
+    price: 149,
+    oldPrice: 499,
+    discount: "70% OFF",
+    category: "shirt",
+    image: "https://i.ibb.co/d0L9wjmH/1000043049.jpg",
+    link: "https://bitli.in/thPWfjR"
+  },
+
+  "men-black-shirt-023": {
+    name: "Men Casual Black Shirt",
+    price: 249,
+    oldPrice: 999,
+    discount: "75% OFF",
+    category: "shirt",
+    image: "https://i.ibb.co/4g3jF4RD/1000043052.jpg",
+    link: "https://bitli.in/rfnOWMd"
+  },
+
+  "wrist-watch-024": {
+    name: "Wrist Watch",
+    price: 299,
+    oldPrice: 599,
+    discount: "50% OFF",
+    category: "fashion",
+    image: "https://i.ibb.co/XkyGJ622/1000043054.jpg",
+    link: "https://bitli.in/eadWbOY"
+  }
+
+};
+
+
+/* =========================
+   DISPLAY PRODUCTS
+========================= */
+
+function displayProducts(list = productData) {
+
+  const container =
+    document.getElementById("productsContainer");
+
+  container.innerHTML = "";
+
+  Object.keys(list).forEach(function(id) {
+
+    const product = list[id];
+
+    container.innerHTML += `
+
+      <div
+        class="product"
+        data-category="${product.category}"
+        data-id="${id}"
+      >
+
+        <span class="deal-badge">🔥 HOT DEAL</span>
+
+        <button
+          class="wishlist-btn"
+          onclick="toggleWishlist(this)"
+        >
+          ♡
+        </button>
+
+        <p class="old-price">
+          ₹${product.oldPrice.toLocaleString("en-IN")}
+        </p>
+
+        <p class="price">
+          ₹${product.price}
+          <span class="discount">
+            ${product.discount}
+          </span>
+        </p>
 
         <img
-          src="https://i.ibb.co/8LRJ0gFV/1000042707.jpg"
-          alt="Men's Stylish Shirt"
+          src="${product.image}"
+          alt="${product.name}"
+          loading="lazy"
         >
 
-        <h3>Men's Stylish Shirt</h3>
+        <h3>${product.name}</h3>
 
-        <p class="price">₹499</p>
+        <button
+          class="cart-btn"
+          onclick="addToCart(this)"
+        >
+          🛒 Add to Cart
+        </button>
 
         <button
           class="buy"
-          onclick="window.open('https://myntr.it/Up9d5ud','_blank')"
+          onclick="openProductLink('${product.link}')"
         >
           Buy Now
         </button>
 
       </div>
 
+    `;
 
-<!-- Product 2: Smart Watch -->
-<div class="product" data-category="electronics">
+  });
 
-  <img
-    src="https://i.ibb.co/4w9nwnWz/1000042714.jpg"
-    alt="Gwalbros T800 Ultra Smartwatch"
-  >
-
-  <h3>Gwalbros T800 Ultra Smartwatch</h3>
-
-  <p class="price">₹399</p>
-
-  <button
-    class="buy"
-    onclick="window.open('https://bitli.in/0NoeWDJ','_blank')"
-  >
-    Buy Now
-  </button>
-
-</div>
+  loadWishlist();
+}
 
 
-<!-- Product 3: Wireless Earbuds -->
-<div class="product" data-category="electronics">
+/* =========================
+   WISHLIST
+========================= */
 
-  <img
-    src="https://i.ibb.co/qKgbWsb/1000042719.jpg"
-    alt="Wireless Earbuds"
-  >
+function getWishlist() {
 
-  <h3>Wireless Earbuds</h3>
+  try {
 
-  <p class="price">₹199</p>
+    return JSON.parse(
+      localStorage.getItem("satyamWishlist") || "[]"
+    );
 
-  <button
-    class="buy"
-    onclick="window.open('https://bitli.in/CPwRCg2','_blank')"
-  >
-    Buy Now
-  </button>
+  } catch {
 
-</div>
+    return [];
 
+  }
 
-<!-- Product 4: Sneakers -->
-<div class="product" data-category="fashion">
-
-  <img
-    src="https://i.ibb.co/bg0WNbMY/1000042720.jpg"
-    alt="Stylish Sneakers"
-  >
-
-  <h3>Stylish Sneakers</h3>
-
-  <p class="price">₹199</p>
-
-  <button
-    class="buy"
-    onclick="window.open('https://bitli.in/lhgyO7x','_blank')"
-  >
-    Buy Now
-  </button>
-
-</div>
-
-    </div>
-
-  </div>
+}
 
 
-  <!-- JavaScript -->
-  <script>
+function saveWishlist(wishlist) {
 
-    function searchProducts() {
+  localStorage.setItem(
+    "satyamWishlist",
+    JSON.stringify(wishlist)
+  );
 
-      const searchText = document
-        .getElementById("searchInput")
-        .value
-        .toLowerCase()
-        .trim();
+}
 
-      const products = document.querySelectorAll(".product");
 
-      products.forEach(function(product) {
+function toggleWishlist(button) {
 
-        const productName = product
+  const product =
+    button.closest(".product");
+
+  const productId =
+    product.dataset.id;
+
+  let wishlist =
+    getWishlist();
+
+
+  if (wishlist.includes(productId)) {
+
+    wishlist =
+      wishlist.filter(function(id) {
+        return id !== productId;
+      });
+
+  } else {
+
+    wishlist.push(productId);
+
+  }
+
+
+  saveWishlist(wishlist);
+
+  loadWishlist();
+
+}
+
+
+function loadWishlist() {
+
+  const wishlist = getWishlist();
+
+  document
+    .querySelectorAll(".product")
+    .forEach(function(product) {
+
+      const id =
+        product.dataset.id;
+
+      const button =
+        product.querySelector(".wishlist-btn");
+
+      if (!button) return;
+
+
+      if (wishlist.includes(id)) {
+
+        button.classList.add("active");
+        button.textContent = "♥";
+
+      } else {
+
+        button.classList.remove("active");
+        button.textContent = "♡";
+
+      }
+
+    });
+
+
+  updateWishlistCount();
+
+}
+
+
+function updateWishlistCount() {
+
+  const count =
+    document.getElementById("wishlistCount");
+
+  if (count) {
+
+    count.textContent =
+      getWishlist().length;
+
+  }
+
+}
+
+
+function openWishlist() {
+
+  window.location.href =
+    "wishlist.html";
+
+}
+
+
+/* =========================
+   CART
+========================= */
+
+function getCart() {
+
+  try {
+
+    return JSON.parse(
+      localStorage.getItem("satyamCart") || "[]"
+    );
+
+  } catch {
+
+    return [];
+
+  }
+
+}
+
+
+function saveCart(cart) {
+
+  localStorage.setItem(
+    "satyamCart",
+    JSON.stringify(cart)
+  );
+
+}
+
+
+function addToCart(button) {
+
+  const product =
+    button.closest(".product");
+
+  const productId =
+    product.dataset.id;
+
+  const data =
+    productData[productId];
+
+  if (!data) {
+
+    alert("Product data not found.");
+    return;
+
+  }
+
+
+  let cart =
+    getCart();
+
+
+  const existing =
+    cart.find(function(item) {
+      return item.id === productId;
+    });
+
+
+  if (existing) {
+
+    existing.quantity =
+      Number(existing.quantity || 0) + 1;
+
+  } else {
+
+    cart.push({
+
+      id: productId,
+      name: data.name,
+      price: data.price,
+      image: data.image,
+      link: data.link,
+      quantity: 1
+
+    });
+
+  }
+
+
+  saveCart(cart);
+
+  updateCartCount();
+
+
+  button.textContent =
+    "✓ Added";
+
+  button.classList.add("added");
+
+
+  setTimeout(function() {
+
+    button.textContent =
+      "🛒 Add to Cart";
+
+    button.classList.remove("added");
+
+  }, 1000);
+
+}
+
+
+function updateCartCount() {
+
+  const cart =
+    getCart();
+
+  const count =
+    cart.reduce(function(total, item) {
+
+      return total +
+        Number(item.quantity || 0);
+
+    }, 0);
+
+
+  const cartCount =
+    document.getElementById("cartCount");
+
+
+  if (cartCount) {
+
+    cartCount.textContent =
+      count;
+
+  }
+
+
+  localStorage.setItem(
+    "satyamCartCount",
+    count
+  );
+
+}
+
+
+function openCart() {
+
+  window.location.href =
+    "cart.html";
+
+}
+
+
+/* =========================
+   SEARCH
+========================= */
+
+function searchProducts() {
+
+  const text =
+    document
+      .getElementById("searchInput")
+      .value
+      .toLowerCase()
+      .trim();
+
+
+  document
+    .querySelectorAll(".product")
+    .forEach(function(product) {
+
+      const name =
+        product
           .querySelector("h3")
           .textContent
           .toLowerCase();
 
-        product.style.display =
-          productName.includes(searchText) ? "" : "none";
-
-      });
-    }
+      const category =
+        product.dataset.category
+          .toLowerCase();
 
 
-    function filterCategory(category) {
+      product.style.display =
+        (
+          name.includes(text) ||
+          category.includes(text)
+        )
+          ? ""
+          : "none";
 
-      const products = document.querySelectorAll(".product");
+    });
 
-      products.forEach(function(product) {
+}
 
-        if (
-          category === "all" ||
-          product.dataset.category === category
-        ) {
-          product.style.display = "";
-        } else {
-          product.style.display = "none";
-        }
 
-      });
+/* =========================
+   CATEGORY FILTER
+========================= */
 
-      // Search box clear
-      document.getElementById("searchInput").value = "";
-    }
+function filterCategory(category) {
 
-  </script>
+  document
+    .getElementById("searchInput")
+    .value = "";
+
+
+  document
+    .querySelectorAll(".product")
+    .forEach(function(product) {
+
+      if (
+        category === "all" ||
+        product.dataset.category === category
+      ) {
+
+        product.style.display = "";
+
+      } else {
+
+        product.style.display = "none";
+
+      }
+
+    });
+
+}
+
+
+/* =========================
+   BUY NOW
+========================= */
+
+function openProductLink(link) {
+
+  if (!link) {
+
+    alert("Product link is not available.");
+    return;
+
+  }
+
+
+  window.open(
+    link,
+    "_blank",
+    "noopener,noreferrer"
+  );
+
+}
+
+
+/* =========================
+   PAGE LOAD
+========================= */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  function() {
+
+    displayProducts();
+
+    updateCartCount();
+
+    updateWishlistCount();
+
+  }
+);
+
+</script>
 
 </body>
 </html>
