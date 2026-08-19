@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#2874f0">
   <title>Satyam Store</title>
   <link rel="stylesheet" href="style.css">
 </head>
@@ -23,6 +24,7 @@
 </header>
 
 
+<!-- HERO -->
 <div class="hero">
   <div>
     <h2>🔥 Today's Best Deals</h2>
@@ -35,6 +37,7 @@
 </div>
 
 
+<!-- SEARCH -->
 <div class="search">
   <input
     type="text"
@@ -45,6 +48,7 @@
 </div>
 
 
+<!-- CATEGORIES -->
 <div class="categories">
   <button onclick="filterCategory('all')">All</button>
   <button onclick="filterCategory('shirt')">👕 Shirts</button>
@@ -54,6 +58,7 @@
 </div>
 
 
+<!-- PRODUCTS -->
 <div class="container">
 
   <h2>🔥 Trending Products</h2>
@@ -66,11 +71,16 @@
 
 <script>
 
-/* =========================
+/* =====================================================
    ALL PRODUCT DATA
-========================= */
+   TOTAL: 37 PRODUCTS
+===================================================== */
 
 const productData = {
+
+  /* =====================
+     OLD PRODUCTS
+  ===================== */
 
   "shirt-001": {
     name: "Men's Stylish Shirt",
@@ -310,14 +320,149 @@ const productData = {
     category: "fashion",
     image: "https://i.ibb.co/XkyGJ622/1000043054.jpg",
     link: "https://bitli.in/eadWbOY"
+  },
+
+
+  /* =====================
+     NEW PRODUCTS
+  ===================== */
+
+  "red-gown-025": {
+    name: "Red Gown",
+    price: 349,
+    oldPrice: 999,
+    discount: "65% OFF",
+    category: "fashion",
+    image: "https://i.ibb.co/yBWQcLQL/1000043291.jpg",
+    link: "https://bitli.in/8zqHnNe"
+  },
+
+  "jewellery-set-026": {
+    name: "Jewellery Set",
+    price: 171,
+    oldPrice: 1599,
+    discount: "89% OFF",
+    category: "fashion",
+    image: "https://i.ibb.co/9HyT524Q/1000043296.jpg",
+    link: "https://bitli.in/4yI9coT"
+  },
+
+  "jewel-set-027": {
+    name: "Jewel Set",
+    price: 199,
+    oldPrice: 999,
+    discount: "80% OFF",
+    category: "fashion",
+    image: "https://i.ibb.co/FLkwWDyB/1000043300.jpg",
+    link: "https://bitli.in/dc65Yfs"
+  },
+
+  "women-earning-028": {
+    name: "Women Earning",
+    price: 171,
+    oldPrice: 499,
+    discount: "66% OFF",
+    category: "fashion",
+    image: "https://i.ibb.co/bjx2tLxg/1000043303.jpg",
+    link: "https://bitli.in/a96U5nw"
+  },
+
+  "men-sneakers-029": {
+    name: "Men Sneakers",
+    price: 349,
+    oldPrice: 999,
+    discount: "65% OFF",
+    category: "fashion",
+    image: "https://i.ibb.co/dJ7wLnP8/1000043310.jpg",
+    link: "https://bitli.in/JDifVu4"
+  },
+
+  "watched-pack-3-030": {
+    name: "Watched Pack of 3",
+    price: 249,
+    oldPrice: 999,
+    discount: "75% OFF",
+    category: "fashion",
+    image: "https://i.ibb.co/jv9dyBK7/1000043312.jpg",
+    link: "https://bitli.in/xsg5yI7"
+  },
+
+  "watch-wrestlate-031": {
+    name: "Watch and Wrestlate",
+    price: 180,
+    oldPrice: 600,
+    discount: "70% OFF",
+    category: "fashion",
+    image: "https://i.ibb.co/gLK8T4CP/1000043315.jpg",
+    link: "https://bitli.in/RDwo1qd"
+  },
+
+  "watches-pack-3-032": {
+    name: "Watches Pack of 3",
+    price: 250,
+    oldPrice: 999,
+    discount: "75% OFF",
+    category: "fashion",
+    image: "https://i.ibb.co/ns753881/1000043318.jpg",
+    link: "https://bitli.in/CyOr703"
+  },
+
+  "men-trouser-033": {
+    name: "Men Trouser",
+    price: 299,
+    oldPrice: 999,
+    discount: "70% OFF",
+    category: "fashion",
+    image: "https://i.ibb.co/ycshzMcd/1000043320.jpg",
+    link: "https://bitli.in/2x4ey1s"
+  },
+
+  "men-blue-baggy-jeans-034": {
+    name: "Men Blue Baggy Jeans",
+    price: 399,
+    oldPrice: 999,
+    discount: "60% OFF",
+    category: "fashion",
+    image: "https://i.ibb.co/0pQzWswh/1000043324.jpg",
+    link: "https://bitli.in/r3gnO3e"
+  },
+
+  "men-tshirt-035": {
+    name: "Men T-Shirt",
+    price: 199,
+    oldPrice: 899,
+    discount: "78% OFF",
+    category: "fashion",
+    image: "https://i.ibb.co/Kx7jpv54/1000043327.jpg",
+    link: "https://bitli.in/KXufha1"
+  },
+
+  "men-black-tshirt-036": {
+    name: "Men Black T-Shirt",
+    price: 150,
+    oldPrice: 999,
+    discount: "85% OFF",
+    category: "fashion",
+    image: "https://i.ibb.co/h3WfNQm/1000043334.jpg",
+    link: "https://bitli.in/Fagkc5d"
+  },
+
+  "men-boys-tshirt-037": {
+    name: "Men or Boy's T-Shirt",
+    price: 80,
+    oldPrice: 888,
+    discount: "91% OFF",
+    category: "fashion",
+    image: "https://i.ibb.co/SXSvnHH5/1000043338.jpg",
+    link: "https://bitli.in/lrXKxul"
   }
 
 };
 
 
-/* =========================
+/* =====================================================
    DISPLAY PRODUCTS
-========================= */
+===================================================== */
 
 function displayProducts(list = productData) {
 
@@ -326,7 +471,22 @@ function displayProducts(list = productData) {
 
   container.innerHTML = "";
 
-  Object.keys(list).forEach(function(id) {
+  const ids = Object.keys(list);
+
+  if (ids.length === 0) {
+
+    container.innerHTML = `
+      <div class="empty-cart">
+        <h2>😔 No Products Found</h2>
+        <p>Try searching for another product.</p>
+      </div>
+    `;
+
+    return;
+  }
+
+
+  ids.forEach(function(id) {
 
     const product = list[id];
 
@@ -338,21 +498,24 @@ function displayProducts(list = productData) {
         data-id="${id}"
       >
 
-        <span class="deal-badge">🔥 HOT DEAL</span>
+        <span class="deal-badge">
+          🔥 HOT DEAL
+        </span>
 
         <button
           class="wishlist-btn"
           onclick="toggleWishlist(this)"
+          aria-label="Add to wishlist"
         >
           ♡
         </button>
 
         <p class="old-price">
-          ₹${product.oldPrice.toLocaleString("en-IN")}
+          ₹${Number(product.oldPrice).toLocaleString("en-IN")}
         </p>
 
         <p class="price">
-          ₹${product.price}
+          ₹${Number(product.price).toLocaleString("en-IN")}
           <span class="discount">
             ${product.discount}
           </span>
@@ -390,9 +553,9 @@ function displayProducts(list = productData) {
 }
 
 
-/* =========================
+/* =====================================================
    WISHLIST
-========================= */
+===================================================== */
 
 function getWishlist() {
 
@@ -402,7 +565,7 @@ function getWishlist() {
       localStorage.getItem("satyamWishlist") || "[]"
     );
 
-  } catch {
+  } catch (error) {
 
     return [];
 
@@ -425,6 +588,8 @@ function toggleWishlist(button) {
 
   const product =
     button.closest(".product");
+
+  if (!product) return;
 
   const productId =
     product.dataset.id;
@@ -456,7 +621,8 @@ function toggleWishlist(button) {
 
 function loadWishlist() {
 
-  const wishlist = getWishlist();
+  const wishlist =
+    getWishlist();
 
   document
     .querySelectorAll(".product")
@@ -514,9 +680,9 @@ function openWishlist() {
 }
 
 
-/* =========================
+/* =====================================================
    CART
-========================= */
+===================================================== */
 
 function getCart() {
 
@@ -526,7 +692,7 @@ function getCart() {
       localStorage.getItem("satyamCart") || "[]"
     );
 
-  } catch {
+  } catch (error) {
 
     return [];
 
@@ -550,6 +716,8 @@ function addToCart(button) {
   const product =
     button.closest(".product");
 
+  if (!product) return;
+
   const productId =
     product.dataset.id;
 
@@ -570,7 +738,9 @@ function addToCart(button) {
 
   const existing =
     cart.find(function(item) {
+
       return item.id === productId;
+
     });
 
 
@@ -584,10 +754,15 @@ function addToCart(button) {
     cart.push({
 
       id: productId,
+
       name: data.name,
+
       price: data.price,
+
       image: data.image,
+
       link: data.link,
+
       quantity: 1
 
     });
@@ -622,6 +797,7 @@ function updateCartCount() {
 
   const cart =
     getCart();
+
 
   const count =
     cart.reduce(function(total, item) {
@@ -660,16 +836,17 @@ function openCart() {
 }
 
 
-/* =========================
+/* =====================================================
    SEARCH
-========================= */
+===================================================== */
 
 function searchProducts() {
 
+  const input =
+    document.getElementById("searchInput");
+
   const text =
-    document
-      .getElementById("searchInput")
-      .value
+    input.value
       .toLowerCase()
       .trim();
 
@@ -689,22 +866,27 @@ function searchProducts() {
           .toLowerCase();
 
 
-      product.style.display =
-        (
-          name.includes(text) ||
-          category.includes(text)
-        )
-          ? ""
-          : "none";
+      if (
+        name.includes(text) ||
+        category.includes(text)
+      ) {
+
+        product.style.display = "";
+
+      } else {
+
+        product.style.display = "none";
+
+      }
 
     });
 
 }
 
 
-/* =========================
+/* =====================================================
    CATEGORY FILTER
-========================= */
+===================================================== */
 
 function filterCategory(category) {
 
@@ -735,9 +917,9 @@ function filterCategory(category) {
 }
 
 
-/* =========================
+/* =====================================================
    BUY NOW
-========================= */
+===================================================== */
 
 function openProductLink(link) {
 
@@ -758,9 +940,9 @@ function openProductLink(link) {
 }
 
 
-/* =========================
+/* =====================================================
    PAGE LOAD
-========================= */
+===================================================== */
 
 document.addEventListener(
   "DOMContentLoaded",
