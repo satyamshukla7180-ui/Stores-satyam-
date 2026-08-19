@@ -205,6 +205,102 @@ const products = {
     price: 299,
     image: "https://i.ibb.co/XkyGJ622/1000043054.jpg",
     link: "https://bitli.in/eadWbOY"
+  },
+
+
+  /* =========================
+     NEW PRODUCTS 25-37
+  ========================= */
+
+  "red-gown-025": {
+    name: "Red Gown",
+    price: 349,
+    image: "https://i.ibb.co/yBWQcLQL/1000043291.jpg",
+    link: "https://bitli.in/8zqHnNe"
+  },
+
+  "jewellery-set-026": {
+    name: "Jewellery Set",
+    price: 171,
+    image: "https://i.ibb.co/9HyT524Q/1000043296.jpg",
+    link: "https://bitli.in/4yI9coT"
+  },
+
+  "jewel-set-027": {
+    name: "Jewel Set",
+    price: 199,
+    image: "https://i.ibb.co/FLkwWDyB/1000043300.jpg",
+    link: "https://bitli.in/dc65Yfs"
+  },
+
+  "women-earning-028": {
+    name: "Women Earning",
+    price: 171,
+    image: "https://i.ibb.co/bjx2tLxg/1000043303.jpg",
+    link: "https://bitli.in/a96U5nw"
+  },
+
+  "men-sneakers-029": {
+    name: "Men Sneakers",
+    price: 349,
+    image: "https://i.ibb.co/dJ7wLnP8/1000043310.jpg",
+    link: "https://bitli.in/JDifVu4"
+  },
+
+  "watch-pack-3-030": {
+    name: "Watches Pack of 3",
+    price: 249,
+    image: "https://i.ibb.co/jv9dyBK7/1000043312.jpg",
+    link: "https://bitli.in/xsg5yI7"
+  },
+
+  "watch-wristlet-031": {
+    name: "Watch and Wristlet",
+    price: 180,
+    image: "https://i.ibb.co/gLK8T4CP/1000043315.jpg",
+    link: "https://bitli.in/RDwo1qd"
+  },
+
+  "watches-pack-3-032": {
+    name: "Watches Pack of 3",
+    price: 250,
+    image: "https://i.ibb.co/ns753881/1000043318.jpg",
+    link: "https://bitli.in/CyOr703"
+  },
+
+  "men-trouser-033": {
+    name: "Men Trouser",
+    price: 299,
+    image: "https://i.ibb.co/ycshzMcd/1000043320.jpg",
+    link: "https://bitli.in/2x4ey1s"
+  },
+
+  "men-blue-baggy-jeans-034": {
+    name: "Men Blue Baggy Jeans",
+    price: 399,
+    image: "https://i.ibb.co/0pQzWswh/1000043324.jpg",
+    link: "https://bitli.in/r3gnO3e"
+  },
+
+  "men-tshirt-035": {
+    name: "Men T-Shirt",
+    price: 199,
+    image: "https://i.ibb.co/Kx7jpv54/1000043327.jpg",
+    link: "https://bitli.in/KXufha1"
+  },
+
+  "men-black-tshirt-036": {
+    name: "Men Black T-Shirt",
+    price: 150,
+    image: "https://i.ibb.co/h3WfNQm/1000043334.jpg",
+    link: "https://bitli.in/Fagkc5d"
+  },
+
+  "men-boys-tshirt-037": {
+    name: "Men or Boy's T-Shirt",
+    price: 80,
+    image: "https://i.ibb.co/SXSvnHH5/1000043338.jpg",
+    link: "https://bitli.in/lrXKxul"
   }
 
 };
@@ -218,9 +314,11 @@ function getWishlist() {
 
   try {
 
-    return JSON.parse(
+    const data = JSON.parse(
       localStorage.getItem("satyamWishlist") || "[]"
     );
+
+    return Array.isArray(data) ? data : [];
 
   } catch {
 
@@ -246,7 +344,7 @@ function saveWishlist(wishlist) {
 
 
 /* =========================
-   DISPLAY
+   DISPLAY WISHLIST
 ========================= */
 
 function displayWishlist() {
@@ -254,11 +352,14 @@ function displayWishlist() {
   const container =
     document.getElementById("wishlistItems");
 
+  if (!container) return;
+
   container.innerHTML = "";
 
-  const wishlist =
-    getWishlist();
+  const wishlist = getWishlist();
 
+
+  /* EMPTY */
 
   if (wishlist.length === 0) {
 
@@ -288,12 +389,17 @@ function displayWishlist() {
   }
 
 
+  /* PRODUCTS */
+
+  let validProducts = 0;
+
   wishlist.forEach(function(id) {
 
-    const product =
-      products[id];
+    const product = products[id];
 
     if (!product) return;
+
+    validProducts++;
 
 
     container.innerHTML += `
@@ -303,6 +409,7 @@ function displayWishlist() {
         <img
           src="${product.image}"
           alt="${product.name}"
+          loading="lazy"
         >
 
         <div class="cart-info">
@@ -312,7 +419,7 @@ function displayWishlist() {
           </h3>
 
           <p class="price">
-            ₹${product.price}
+            ₹${product.price.toLocaleString("en-IN")}
           </p>
 
           <button
@@ -344,26 +451,48 @@ function displayWishlist() {
 
   });
 
+
+  /* INVALID OLD IDS */
+
+  if (validProducts === 0) {
+
+    container.innerHTML = `
+
+      <div class="empty-cart">
+
+        <h2>❤️ Your wishlist is empty</h2>
+
+        <p>
+          Browse products and add them to your wishlist.
+        </p>
+
+        <button
+          class="buy"
+          onclick="continueShopping()"
+        >
+          🛍️ Browse Products
+        </button>
+
+      </div>
+
+    `;
+
+  }
+
 }
 
 
 /* =========================
-   REMOVE
+   REMOVE FROM WISHLIST
 ========================= */
 
 function removeFromWishlist(id) {
 
-  let wishlist =
-    getWishlist();
+  let wishlist = getWishlist();
 
-
-  wishlist =
-    wishlist.filter(function(item) {
-
-      return item !== id;
-
-    });
-
+  wishlist = wishlist.filter(function(item) {
+    return item !== id;
+  });
 
   saveWishlist(wishlist);
 
@@ -378,24 +507,40 @@ function removeFromWishlist(id) {
 
 function addToCart(id) {
 
-  const product =
-    products[id];
+  const product = products[id];
 
-  if (!product) return;
+  if (!product) {
+
+    alert("Product not found.");
+
+    return;
+
+  }
 
 
-  let cart =
-    JSON.parse(
+  let cart;
+
+  try {
+
+    cart = JSON.parse(
       localStorage.getItem("satyamCart") || "[]"
     );
 
+  } catch {
 
-  const existing =
-    cart.find(function(item) {
+    cart = [];
 
-      return item.id === id;
+  }
 
-    });
+
+  if (!Array.isArray(cart)) {
+    cart = [];
+  }
+
+
+  const existing = cart.find(function(item) {
+    return item.id === id;
+  });
 
 
   if (existing) {
@@ -408,10 +553,15 @@ function addToCart(id) {
     cart.push({
 
       id: id,
+
       name: product.name,
+
       price: product.price,
+
       image: product.image,
+
       link: product.link,
+
       quantity: 1
 
     });
@@ -439,19 +589,32 @@ function addToCart(id) {
 
 function updateCartCount() {
 
-  const cart =
-    JSON.parse(
+  let cart;
+
+  try {
+
+    cart = JSON.parse(
       localStorage.getItem("satyamCart") || "[]"
     );
 
+  } catch {
 
-  const count =
-    cart.reduce(function(total, item) {
+    cart = [];
 
-      return total +
-        Number(item.quantity || 0);
+  }
 
-    }, 0);
+
+  if (!Array.isArray(cart)) {
+    cart = [];
+  }
+
+
+  const count = cart.reduce(function(total, item) {
+
+    return total +
+      Number(item.quantity || 0);
+
+  }, 0);
 
 
   localStorage.setItem(
@@ -463,13 +626,12 @@ function updateCartCount() {
 
 
 /* =========================
-   BUY
+   BUY NOW
 ========================= */
 
 function buyProduct(id) {
 
-  const product =
-    products[id];
+  const product = products[id];
 
   if (!product || !product.link) {
 
@@ -504,7 +666,7 @@ function continueShopping() {
 
 
 /* =========================
-   LOAD
+   PAGE LOAD
 ========================= */
 
 document.addEventListener(
@@ -512,6 +674,8 @@ document.addEventListener(
   function() {
 
     displayWishlist();
+
+    updateCartCount();
 
   }
 );
